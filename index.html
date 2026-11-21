@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physical Fundamentals Warm Up</title>
+<title>Physical Fundamentals Level 1</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
 
@@ -19,6 +19,11 @@
   .header h1 {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 22px;
     letter-spacing: 2px; text-transform: uppercase; color: #C61D23;
+  }
+
+  .header .kids {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 13px;
+    letter-spacing: 2px; text-transform: uppercase; color: #bbb; margin-top: 3px;
   }
 
   .phase-label {
@@ -53,6 +58,21 @@
   .ff.show { opacity: 1; }
   .ff.reps { right: auto; left: 10px; background: rgba(10,10,10,0.8); }   /* rep counter */
 
+  /* Repeat card — shown instead of animating the same set again */
+  .card {
+    position: absolute; left: 50%; top: 44%; width: 270px; z-index: 31; pointer-events: none;
+    transform: translate(-50%,-50%); opacity: 0; text-align: center;
+    background: rgba(10,10,10,0.88); border-top: 3px solid #C61D23; padding: 12px 16px 14px;
+  }
+  .card .k   { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px;
+               letter-spacing: 3px; text-transform: uppercase; color: #C61D23; }
+  .card .big { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 30px; line-height: 1.1;
+               letter-spacing: 1.5px; text-transform: uppercase; color: #fff; margin: 2px 0 6px; }
+  .card .sub { font-size: 12px; line-height: 1.45; color: #ccc; }
+  .card.show { animation: cardIn 1s ease-out 1 both; }
+  @keyframes cardIn { 0%{opacity:0;transform:translate(-50%,-50%) scale(.92)} 25%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+                      40%{opacity:.35} 55%{opacity:1} 100%{opacity:1;transform:translate(-50%,-50%) scale(1)} }
+
   /* Area labels — flash in on the overview, hidden once the drill starts */
   #labels { opacity: 0; transition: opacity 0.4s; }
   #labels.show { opacity: 1; animation: labelFlash 1.4s ease-out 1; }
@@ -64,6 +84,12 @@
   }
   #labels .dim  { font-size: 15px; fill: #ffb347; }
   #labels .name { font-size: 11px; fill: #fff; }
+  /* Coach's call — shown above the coach's head while the command is given */
+  #call {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 1.5px;
+    text-transform: uppercase; text-anchor: middle; fill: #fff;
+    paint-order: stroke; stroke: #C61D23; stroke-width: 5px; stroke-linejoin: round;
+  }
   @keyframes cueIn { 0%{opacity:0;transform:translate(-50%,6px)} 30%{opacity:1;transform:translate(-50%,0)}
                      55%{opacity:0.25} 100%{opacity:1;transform:translate(-50%,0)} }
 
@@ -75,6 +101,8 @@
   }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
   .legend-dot.red  { background: #C61D23; }
+  .legend-dot.coach { background: #e9e9e9; }
+  .legend-dot.ball  { width: 9px; height: 9px; background: #f4f4f4; border: 1px solid #555; }
   .legend-cone { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
                  border-bottom: 10px solid #f28c1a; }
   .legend-guide { width: 14px; height: 3px; background: #ffe066; border-radius: 2px; }
@@ -115,10 +143,11 @@
 <div class="tsi-logo-wrap"><img class="tsi-logo" alt="TSI" src="data:image/jpeg;base64,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"/></div>
 
 <div class="header">
-  <h1 id="partTitle">Physical Fundamentals — Exercise 2</h1>
+  <h1 id="partTitle">Physical Fundamentals Level 1 · Ex 1</h1>
+  <div class="kids">FIFA 11+ Kids · Ages 7–11</div>
 </div>
 
-<div class="phase-label" id="partName">Skating Jumps</div>
+<div class="phase-label" id="partName">Alertness Running Game</div>
 
 <div class="scene">
   <svg id="svg" width="360" height="400" viewBox="0 0 360 400">
@@ -138,14 +167,18 @@
     <g id="shadows"></g>
     <g id="pool" stroke-linecap="round" stroke-linejoin="round"></g>
     <g id="labels"></g>
+    <text id="call"></text>
   </svg>
   <div class="cue" id="cue"></div>
+  <div class="card" id="card"></div>
   <div class="ff" id="ff">⏩ 3× speed</div>
   <div class="ff reps" id="reps"></div>
 </div>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot red"></div>Players</div>
+  <div class="legend-item"><div class="legend-dot coach"></div>Coach</div>
+  <div class="legend-item"><div class="legend-dot ball"></div>Ball</div>
   <div class="legend-item"><div class="legend-cone"></div>Cones / work area</div>
   <div class="legend-item"><div class="legend-dash"></div>Jump direction</div>
   <div class="legend-item"><div class="legend-guide"></div>Alignment line</div>
@@ -208,7 +241,7 @@ function lineD(cam, a, b){
 
 // ── Figure rig — body frame: x = figure's right, y = up, z = forward ──
 const B = { LT:.44, LS:.44, ANK:.07, HIP:.1, TOR:.5, SHW:.19, LU:.28, LF:.26, NECK:.17, FOOT:.17 };
-const TEAM = { red:'#C61D23', blue:'#1a6eb5', orange:'#b86d00' };
+const TEAM = { red:'#C61D23', blue:'#1a6eb5', orange:'#b86d00', coach:'#e9e9e9' };
 const SKIN='#cfd3d6', SHORTS='#141414', BOOT='#0d0d0d', HAIR='#2b2018', GUIDE='#ffe066';
 
 // Pose = flat array: lift, lean, roll, legL[a,b,g], legR[a,b,g], armL[a,b,e], armR[a,b,e], toe
@@ -216,8 +249,9 @@ const SKIN='#cfd3d6', SHORTS='#141414', BOOT='#0d0d0d', HAIR='#2b2018', GUIDE='#
 //  arm a = arm forward,   b = arm out,   e = elbow bend
 //  toe = how far up on the toes (0 = flat foot, PI = foot laid flat behind) — one number or [left, right]
 //  anchor = 1 pins the knees to the figure's spot instead of the pelvis (kneeling exercises)
-const Q = (lift,lean,roll,l0,l1,a0,a1,toe,anchor)=>
-  [lift,lean,roll,...l0,...l1,...a0,...a1, ...(Array.isArray(toe) ? toe : [toe||0, toe||0]), anchor||0];
+//  neck = forward bend of the head off the line of the spine (chin towards the chest, e.g. to watch the ball)
+const Q = (lift,lean,roll,l0,l1,a0,a1,toe,anchor,neck)=>
+  [lift,lean,roll,...l0,...l1,...a0,...a1, ...(Array.isArray(toe) ? toe : [toe||0, toe||0]), anchor||0, neck||0];
 const ease = k=>k*k*(3-2*k);
 const mixQ = (a,b,k)=>a.map((v,i)=>mix(v, b[i], k));
 
@@ -358,11 +392,416 @@ function skateArrow(f){
   return j<0 ? null : [skPos(S,j), skPos(S,j+1)];
 }
 
+// ── Single-leg jumps forwards: hop on one leg, land on the same leg, hold ~3 s ──
+// st = the leg in use. Arms swing back on the load and drive forward on the take-off; the free leg
+// stays bent behind. Contact phases pin the stance foot (the body travels over it, the foot never slides).
+const HOPP = {
+  hold:  st=>skQ(st, .12, .03, [.2,.35,.04],  [.35,1.4,.02], [.2,.55,.4],   [.2,.55,.4],   0,  .4),
+  load:  st=>skQ(st, .5,  0,   [.85,1.5,.04], [.1,1.3,.02],  [-.7,.15,.25], [-.7,.15,.25], 0,  .4),
+  push:  st=>skQ(st, .35, 0,   [-.25,.1,.04], [.9,1.3,.02],  [1.5,.15,.35], [1.5,.15,.35], 1,  .3),
+  air:   st=>skQ(st, .25, 0,   [.4,1.2,.04],  [.45,1.5,.02], [1.2,.25,.45], [1.2,.25,.45], .3, .3),
+  reach: st=>skQ(st, .3,  0,   [.6,.3,.04],   [.2,1.3,.02],  [.9,.35,.4],   [.9,.35,.4],   0,  .3),
+  land:  st=>skQ(st, .5,  .04, [.9,1.55,.04], [.15,1.3,.02], [.8,.5,.45],   [.8,.5,.45],   0,  .4)
+};
+pose.hopHoldR = ()=>HOPP.hold(1);
+pose.hopHoldL = ()=>HOPP.hold(0);
+// One jump every T s: load, take-off (foot still down for the first quarter of AIR), flight, absorb,
+// then hold. PER jumps on the first leg, then the free foot goes down and the other leg takes over.
+const HP = { T:4.3, LOAD:.45, AIR:.5, ABS:.35, D:1.2, H:.22, N:10, PER:5 };
+const ankZ = (q, leg)=>fk(q)['ank'+leg][2];   // stance ankle, forward of the pelvis
+function hopStep(f, t, dt){
+  const S=f.hp, P=HOPP;
+  if(t>=S.t0) S.prog = Math.min(S.prog + dt*S.speed, HP.N*HP.T + 1.5);
+  const n=Math.min(HP.N-1, Math.floor(S.prog/HP.T)), tau=S.prog-n*HP.T;
+  const st = n<HP.PER ? S.s0 : 1-S.s0;
+  const fa = S.f0 + n*HP.D, fb = fa + HP.D;            // stance foot spot before / after this jump
+  const tA=HP.LOAD, tB=tA+HP.AIR, tC=tB+HP.ABS;
+  let q, z;
+  if(tau<tA){ q=mixQ(P.hold(st), P.load(st), ease(tau/tA)); z=fa-ankZ(q,st); }
+  else if(tau<tB){
+    const k=(tau-tA)/HP.AIR;
+    if(k<.25){ q=mixQ(P.load(st), P.push(st), ease(k/.25)); z=fa-ankZ(q,st); }   // driving off the ground
+    else {
+      const kk=(k-.25)/.75;
+      q = kk<.5 ? mixQ(P.push(st), P.air(st), ease(kk*2)) : mixQ(P.air(st), P.reach(st), ease(kk*2-1));
+      q[0] += HP.H*Math.sin(PI*kk);
+      z = mix(fa-ankZ(P.push(st),st), fb-ankZ(P.reach(st),st), kk);
+    }
+  } else {
+    let pin=st;
+    if(tau<tC) q=mixQ(P.reach(st), P.land(st), ease((tau-tB)/HP.ABS));
+    else {
+      const h=tau-tC;
+      q = mixQ(P.land(st), P.hold(st), ease(Math.min(1, h/.7)));
+      q[2] += .06*Math.sin(h*9)*Math.exp(-h*2.2);                    // wobble, finding the balance
+      q[1] += .04*Math.sin(h*7)*Math.exp(-h*2.5);
+      if(n===HP.PER-1 && tau>HP.T-1.3){                               // swap legs: foot down, lift the other
+        const w=(tau-(HP.T-1.3))/1.3;
+        q = w<.5 ? mixQ(q, pose.stand(), ease(w*2)) : mixQ(pose.stand(), P.hold(1-st), ease(w*2-1));
+        if(w>=.5) pin=1-st;
+      }
+      if(n===HP.N-1 && tau>HP.T-.8) q=mixQ(q, pose.stand(), ease(Math.min(1, (tau-(HP.T-.8))/.6)));   // set done
+    }
+    z = fb - ankZ(q, pin);
+  }
+  return { x:S.x0, z, q, st };
+}
+
+// ── Spiderman, stroking the ball: low crab position (face up on hands and feet), one sole on the ball ──
+// Crab: hips and back kept low (~0.32 m), torso rising to the shoulders, arms straight down to the
+// ground behind, knees up, chin tucked so the eyes stay on the ball. Get down: squat, sit back, plant
+// the hands, lift the hips a little — the feet stay where they are (the body moves back over them).
+// Then one leg at a time: lift, place the sole on top of the ball, roll it forwards, back, settle,
+// foot down; the other leg; keep alternating.
+const SP_LEG = [.48, .25];   // crab: ankle 0.48 m in front of the hips, 0.25 m below them
+const SPP = {
+  squat: ()=>Q(0,.35,0,  [1.6,2.4,.15],[1.6,2.4,.15], [-.5,.15,.2],[-.5,.15,.2], 0,0, .3),
+  sit:   ()=>Q(0,-1,0,   [2,2.6,.15],[2,2.6,.15],     [-.35,.12,0],[-.35,.12,0], 0,0, .9),
+  table: ()=>{ const [a,b]=legIK(...SP_LEG);
+               return Q(0,-1.1,0, [a,b,.12],[a,b,.12], [-.1,.1,.1],[-.1,.1,.1], 0,0, 1.1); }
+};
+// PRE = script start (get down first), DOWN = get-down time, LC = one leg's ball touch, SET = set length,
+// UP = getting back up, BALL = ball centre in front of the standing feet, BR = ball radius
+const SPD = { PRE:-2.8, DOWN:2, LC:4.8, SET:15, UP:1.8, BALL:.32, BR:.115, FWD:.12, BACK:.16 };
+const SP_END = SPD.SET + SPD.UP + .8;
+let SPT = null;   // table-top reference: hip height, ankle and hand spots (body frame), filled on first use
+function spRef(){
+  if(!SPT){ const J=fk(SPP.table()); SPT={ py:J.pelvis[1], ank:J.ank0[2], hand:[J.hand0, J.hand1] }; }
+  return SPT;
+}
+function spDownQ(g){   // 0 = standing, 1 = table-top
+  g=clamp(g,0,1);
+  return g<.35 ? mixQ(pose.stand(), SPP.squat(), ease(g/.35))
+       : g<.6  ? mixQ(SPP.squat(), SPP.sit(), ease((g-.35)/.25))
+               : mixQ(SPP.sit(), SPP.table(), ease((g-.6)/.4));
+}
+// Active leg's ankle target relative to its hip (z forward, d = distance below the hip) → leg angles
+function spFoot(q, leg, z, d, w){
+  const [a,b]=legIK(z, d); q[3+leg*3]=a; q[4+leg*3]=b; q[5+leg*3]=mix(.12, -.1, w);   // foot moves in over the ball
+}
+// One player's state at script time T: pose, position (feet pinned at footZ), hand pins, ball
+function spState(S, T){
+  const R=spRef(), dG=R.py-B.ANK, zG=R.ank, contactD=R.py-(2*SPD.BR+.07);     // ankle on the ground / on top of the ball
+  const restZ = R.ank + SPD.BALL;                                                // ball centre (body frame) at rest
+  let q, plant=0, bz=restZ;
+  const T0 = T - S.lag;                                                          // small per-player lag
+  if(T0<0 || T0>SPD.SET){
+    const g = T0<0 ? (T0-SPD.PRE)/SPD.DOWN : 1-(T0-SPD.SET)/SPD.UP;
+    q = spDownQ(g); plant = clamp((g-.6)/.14, 0, 1);
+  } else {
+    q = SPP.table(); plant = 1;
+    const n=Math.floor(T0/SPD.LC), u=T0-n*SPD.LC, leg = n%2 ? 0 : 1;            // right leg first
+    if(T0 < 3*SPD.LC){
+      const cz = z=>z-.06;                                                       // ankle sits just behind the ball's top
+      const A=[cz(restZ), contactD-.08];
+      let z, d, w;
+      if(u<.8){ const k=ease(u/.8); z=mix(zG, A[0], k); d=mix(dG, A[1], k)-.05*Math.sin(PI*k); w=k; }
+      else if(u<1.1){ const k=ease((u-.8)/.3); z=A[0]; d=mix(A[1], contactD, k); w=1; }
+      else if(u<4.1){
+        bz = u<2.3 ? mix(restZ, restZ+SPD.FWD, ease((u-1.1)/1.2))              // roll forwards (leg nearly straight)…
+           : u<3.6 ? mix(restZ+SPD.FWD, restZ-SPD.BACK, ease((u-2.3)/1.3))     // …and backwards
+           :         mix(restZ-SPD.BACK, restZ, ease((u-3.6)/.5));             // settle it in front of the feet
+        z=cz(bz); d=contactD; w=1;
+      } else { const k=ease((u-4.1)/.7); z=mix(cz(restZ), zG, k); d=mix(contactD, dG, k)-.07*Math.sin(PI*k); w=1-k; }
+      spFoot(q, leg, z, d, w);
+    }
+  }
+  // feet stay put, the body moves over them (in the table-top the resting foot is always at R.ank)
+  const sup = T0>=0 && T0<=SPD.SET ? R.ank : fk(q).ank0[2];
+  const oz = S.footZ - sup, tz = S.footZ - R.ank;                                // origin now / in the table-top
+  return { x:S.x0, z:oz, q, plant, pinW:R.hand.map(h=>[S.x0+h[0], .02, tz+h[2]]), ball:[S.x0, SPD.BR, tz+bz] };
+}
+
+// ── Sideways roll from a squat: diagonal roll over the arm, shoulder and back, alternating sides ──
+// The curled body turns as one piece about a level axis square to the roll direction (diagonally
+// forwards and to the side); the lowest part of the body always stays on the ground, so it rolls
+// rather than slides. Rolls alternate right, left, right… coming up to the squat in between (no
+// standing up or walking back), so the players zigzag forwards.
+const RLP = {
+  squat: ()=>Q(0,.55,0, [1.7,2.45,.25],[1.7,2.45,.25], [.55,-.05,.1],[.55,-.05,.1], .5,0, .5),   // hands down in front of the knees
+  // chin on the chest, the arm on the rolling side reaching (side +1 = right, -1 = left: mirrored)
+  tuck:  side=>{ const a=[.9,.15,1.5], b=[1.25,.35,.3];
+                 return Q(0,.95,0, [1.8,2.55,.2],[1.8,2.55,.2], side<0?b:a, side<0?a:b, .5,0, 1.05); }
+};
+// Script: DOWN to the squat, HANDS pause, TUCK, CHIN pause, then N rolls one CYC apart
+// (ROLL, UPSQ back to the squat, BEAT, TUCK2 for the other side); after the last roll, UP to standing.
+// ANG: roll direction off straight ahead; TILT: body tilt eased in while the hand takes the weight, so the
+// ground contact runs hand → same-side shoulder → lower back → opposite hip → feet (never the neck or head)
+const RL = { R:.3, N:10, DOWN:.7, HANDS:2.6, TUCK:.5, CHIN:2.2, ROLL:1.6, UPSQ:.6, BEAT:.15, TUCK2:.4, UP:.7, ANG:.6, TILT:-.7 };
+RL.D0  = RL.DOWN + RL.HANDS + RL.TUCK + RL.CHIN;       // first roll starts
+RL.CYC = RL.ROLL + RL.UPSQ + RL.BEAT + RL.TUCK2;
+RL.END = RL.D0 + (RL.N-1)*RL.CYC + RL.ROLL + RL.UPSQ + RL.UP;
+const rollSide = k=>k%2 ? -1 : 1;                        // right first
+function rotM(a, th){   // rotation matrix (rows) about unit axis a by th
+  const c=Math.cos(th), s=Math.sin(th), t=1-c, [x,y,z]=a;
+  return [[t*x*x+c, t*x*y-s*z, t*x*z+s*y], [t*x*y+s*z, t*y*y+c, t*y*z-s*x], [t*x*z-s*y, t*y*z+s*x, t*z*z+c]];
+}
+const mulM = (M,v)=>[M[0][0]*v[0]+M[0][1]*v[1]+M[0][2]*v[2], M[1][0]*v[0]+M[1][1]*v[1]+M[1][2]*v[2], M[2][0]*v[0]+M[2][1]*v[1]+M[2][2]*v[2]];
+// S = { x0, z0, lag }; returns position, pose, rotation, and the current roll's ground path
+function rollState(S, T){
+  const T0=T-S.lag, Dl=2*PI*RL.R, sx=Math.sin(RL.ANG)*Dl, sz=Math.cos(RL.ANG)*Dl;
+  const spot = k=>[S.x0 + (k%2 ? sx : 0), S.z0 + k*sz];      // where roll k starts (right rolls out, left rolls back)
+  const at = (k,q,rot,path)=>{ const p=spot(k); return { x:p[0], z:p[1], q, face:0, rot:rot||null, path:path||null, k }; };
+  if(T0<0) return at(0, pose.stand());
+  let u=T0;
+  if(u<RL.DOWN) return at(0, mixQ(pose.stand(), RLP.squat(), ease(u/RL.DOWN)));
+  if((u-=RL.DOWN) < RL.HANDS) return at(0, RLP.squat());
+  if((u-=RL.HANDS) < RL.TUCK) return at(0, mixQ(RLP.squat(), RLP.tuck(1), ease(u/RL.TUCK)));
+  if((u-=RL.TUCK) < RL.CHIN) return at(0, RLP.tuck(1));
+  u-=RL.CHIN;
+  const k=Math.min(RL.N-1, Math.floor(u/RL.CYC)), side=rollSide(k);
+  u-=k*RL.CYC;
+  const a=spot(k), b=spot(k+1), dir=[side*Math.sin(RL.ANG), 0, Math.cos(RL.ANG)], axis=[dir[2], 0, -dir[0]];
+  if(u<RL.ROLL){
+    const th=2*PI*ease(u/RL.ROLL);
+    const sm=x=>{ x=clamp(x,0,1); return x*x*(3-2*x); }, w=Math.min(sm(th/1.1), sm((2*PI-th)/1.1));
+    const q=RLP.tuck(side); q[2]=RL.TILT*side*w;
+    return { x:a[0]+dir[0]*RL.R*th, z:a[1]+dir[2]*RL.R*th, q, face:0, rot:{ axis, th }, path:[a,b], k };
+  }
+  if((u-=RL.ROLL) < RL.UPSQ) return at(k+1, mixQ(RLP.tuck(side), RLP.squat(), ease(u/RL.UPSQ)));
+  if(k===RL.N-1){ u-=RL.UPSQ; return at(k+1, u<RL.UP ? mixQ(RLP.squat(), pose.stand(), ease(u/RL.UP)) : pose.stand()); }
+  if((u-=RL.UPSQ) < RL.BEAT) return at(k+1, RLP.squat());
+  u-=RL.BEAT;
+  return at(k+1, mixQ(RLP.squat(), RLP.tuck(-side), ease(Math.min(1, u/RL.TUCK2))));
+}
+// Joints for drawing: rolled figures turn rigidly about the curl's centre, then drop so the lowest
+// part (allowing for limb thickness) sits where the feet were — the body rolls over the ground.
+const RAD = { head:.12, neck:.1, base:.14, pelvis:.13, sh0:.1, sh1:.1, hip0:.1, hip1:.1, toe0:.02, toe1:.02 };
+function bodyJ(f){
+  const J=fk(f.q);
+  if(!f.rollRot) return J;
+  const keys=Object.keys(J), M=rotM(f.rollRot.axis, f.rollRot.th);
+  const C=['pelvis','neck','knee0','knee1'].reduce((a,k)=>add3(a, sc3(J[k], .25)), [0,0,0]);
+  const low = JJ=>Math.min(...keys.map(k=>JJ[k][1]-(RAD[k]||.05)));
+  const R={};
+  keys.forEach(k=>{ R[k]=add3(C, mulM(M, [J[k][0]-C[0], J[k][1]-C[1], J[k][2]-C[2]])); });
+  const dy=low(J)-low(R);
+  keys.forEach(k=>{ R[k][1]+=dy; });
+  return R;
+}
+
+// ── Alertness running game: run at the coach, stop on the called leg, hold, run again ──
+// Balance on one leg (st = leg in use): knee soft, free foot behind, arms out; a few wobbles
+// and a small hop early on while the balance is found, then settled.
+const bal = st=>c=>{
+  const q=SKP.hold(st), w=Math.exp(-c*1.6);
+  q[2] += .08*Math.sin(c*10)*w;
+  if(c<.6) q[0] += .03*Math.max(0, Math.sin(c*14));
+  return q;
+};
+pose.balL = bal(0);
+pose.balR = bal(1);
+pose.call = ()=>Q(0,.06,0, [.04,.08,.05],[.04,.08,.05], [.05,.12,.25],[1.45,.25,.1]);   // coach: arm up, calling
+// RUN = seconds per run, D = metres per run, HOLD = seconds on one leg, CALL = call this long before the stop
+const AL = { RUN:1.6, D:2.3, HOLD:3.2, CALL:.5 };
+const CALLS = { R:{ text:'Right!', idle:'balR' }, L:{ text:'Left!', idle:'balL' } };
+function alertStep(f, t, dt){
+  const A=f.al, per=AL.RUN+AL.HOLD, total=A.calls.length*per;
+  if(t>=A.t0) A.prog = Math.min(A.prog + dt*A.speed, total);
+  const n=Math.min(A.calls.length-1, Math.floor(A.prog/per)), tau=A.prog-n*per, C=CALLS[A.calls[n]];
+  const called = tau>AL.RUN-AL.CALL;
+  let z, idle, call=null;
+  if(tau<AL.RUN){
+    z = A.z0 + (n+ease(tau/AL.RUN))*AL.D;
+    idle = called ? C.idle : 'stand';
+    call = called ? C.text : (tau<.8 ? 'Run!' : null);
+  } else {
+    z = A.z0 + (n+1)*AL.D;
+    idle = A.prog>=total ? 'stand' : C.idle;                   // set done: foot down
+    call = tau<AL.RUN+.8 ? C.text : null;
+  }
+  f.call = t>=A.t0 ? call : null;
+  return { z, idle };
+}
+
+// ── Single-leg stance throwing: pairs on one leg, taking turns with a simple two-hand throw ──
+// One throw every THR.CYC seconds: thrower holds at the chest, swings down, tosses underarm (release
+// at REL), ball flies for FLY seconds with an arc of H metres; catcher reaches, catches, pulls it in.
+// Throws alternate A → B → A …, N throws per set (5 each). Foot goes down once the set is done.
+const THR = { CYC:2.6, REL:1.2, FLY:.7, H:.75, N:10 };
+const ARM = { chest:[.55,-.2,1.25], low:[.05,-.15,.35], up:[1.3,-.15,.15], reach:[1.05,-.1,.4], out:[.15,.6,.35] };
+const mixA = (a,b,k)=>a.map((v,i)=>mix(v, b[i], k));
+function throwArms(role, u){   // role 'T' = throwing this cycle, 'C' = catching
+  if(role==='T'){
+    if(u<.6)  return ARM.chest;
+    if(u<1)   return mixA(ARM.chest, ARM.low, ease((u-.6)/.4));
+    if(u<1.3) return mixA(ARM.low, ARM.up, ease((u-1)/.3));
+    if(u<1.8) return mixA(ARM.up, ARM.out, ease((u-1.3)/.5));
+    return ARM.out;
+  }
+  if(u<.8)  return ARM.out;
+  if(u<1.3) return mixA(ARM.out, ARM.reach, ease((u-.8)/.5));
+  if(u<1.9) return ARM.reach;
+  if(u<2.3) return mixA(ARM.reach, ARM.chest, ease((u-1.9)/.4));
+  return ARM.chest;
+}
+const thrCycle = T=>{ const n=Math.min(THR.N-1, Math.floor(T.prog/THR.CYC)); return { n, u:T.prog-n*THR.CYC }; };
+// f.thr = { st (leg in use: 0 left, 1 right), isA, go, t0, speed, prog, ph }
+function thrPose(f, t, dt){
+  const T=f.thr;
+  if(T.go && t>=T.t0) T.prog = Math.min(T.prog + dt*T.speed, THR.N*THR.CYC + 1);
+  const { n, u } = thrCycle(T), role = (n%2===0)===T.isA ? 'T' : 'C', a=throwArms(role, u);
+  const stand=[.12,.22,.04], free=[.3,1.35,.02];                       // supporting knee soft, free foot up behind
+  const lean = .1 + (role==='T' && u>1 && u<1.5 ? .12*Math.sin(PI*(u-1)/.5) : 0);
+  const one = Q(0, lean, .03*Math.sin(T.prog*2.3+T.ph), T.st ? free : stand, T.st ? stand : free, a, a, T.st ? [.4,0] : [0,.4]);
+  const down = clamp((T.prog-THR.N*THR.CYC)/.6, 0, 1);
+  return down ? mixQ(one, Q(0,.05,0, [.04,.08,.05],[.04,.08,.05], a, a), ease(down)) : one;
+}
+// Ball held between the hands (world space), from the pose as drawn
+function handsMid(f){
+  const J=fk(f.q), m=lerp3(J.hand0, J.hand1, .5);
+  return worldOf(f, [m[0], m[1], m[2]+.07]);
+}
+// Where a pair's ball is: in the thrower's hands, in flight, or in the catcher's hands
+function ballPos(P, A, Bf){
+  const { n, u } = thrCycle(A.thr), thrower = n%2 ? Bf : A, catcher = n%2 ? A : Bf;
+  if(u<THR.REL) return handsMid(thrower);
+  if(u<THR.REL+THR.FLY){
+    if(P.fn!==n){ P.fn=n; P.from=handsMid(thrower); }
+    const k=(u-THR.REL)/THR.FLY, p=lerp3(P.from, handsMid(catcher), k);
+    p[1] += THR.H*4*k*(1-k);
+    return p;
+  }
+  return handsMid(catcher);
+}
+function ballItems(cam, p, items){
+  const o=dotItem(cam, p, .13, '#1b1b1b', .002), w=dotItem(cam, p, .115, '#f4f4f4');
+  if(o) items.push(o); if(w) items.push(w);
+}
+
+// ── Press-up tunnel: players side by side in the press-up position, the ball rolled underneath ──
+// Plank: one straight line feet → hips → shoulders → head, arms straight under the shoulders,
+// up on the toes. Body angle ~0.3 rad so the hands just reach the ground.
+const P4 = {
+  plank:       ()=>Q(0,1.27,0, [-1.27,0,.03],[-1.27,0,.03], [0,.05,0],[0,.05,0], .9),
+  crouchHands: ()=>Q(0,1.05,0, [1.5,2.3,.2],[1.5,2.3,.2],  [.1,.05,0],[.1,.05,0], .6),   // squat, hands on the ground
+  // deep squat, hands on the ball at the ground ~0.6 m in front of the feet
+  crouchRoll:  ()=>Q(0,1.05,0, [1.5,2.3,.15],[1.5,2.3,.15], [.3,-.15,.05],[.3,-.15,.05]),
+  crouchPick:  ()=>Q(0,1.05,0, [1.5,2.3,.15],[1.5,2.3,.15], [.25,-.15,.05],[.25,-.15,.05]),
+  standChest:  ()=>Q(0,.05,0, [.04,.08,.05],[.04,.08,.05], ARM.chest, ARM.chest)
+};
+// Getting down (g 0 → 1), staged like a real player rather than one blend:
+//   0–.4  bend at the knees and hips, reaching the hands to the ground (planted from ~.4)
+//   .4–.75 left foot steps back, passing a low knee;  .55–.9 right foot follows
+//   .45–.95 torso tilts into the plank line;  .9–1 hips dip a touch and brace
+// Getting up is the same played backwards. The hands stay pinned to the ground by IK (plantW).
+// Leg from a foot target: ankle (z forward, y down) relative to the hip → [thigh angle, knee bend], knee forward
+function legIK(z, y){
+  const L=B.LT, r=Math.min(Math.hypot(z,y), 2*L-1e-4), al=Math.acos(r/(2*L));
+  return [Math.atan2(z,y)+al, 2*al];
+}
+// Torso tilt that puts the shoulders a straight arm's length from the planted hands
+const PIN = [.2, .02, .44];   // planted hand spot (body frame, ± x): under the shoulders in the plank
+function fitLean(q){
+  const reach = L=>{ q[1]=L; const s=fk(q).sh1; return Math.hypot(s[0]-PIN[0], s[1]-PIN[1], s[2]-PIN[2]); };
+  let lo=.6, hi=1.65;
+  for(let i=0;i<14;i++){ const m=(lo+hi)/2; if(reach(m)>.535) lo=m; else hi=m; }
+  return hi;
+}
+const FOOT = { crouch:[.12,.34], plank:[-.84,.26] };   // ankle below/behind the hip, squat vs plank
+function downQ(g){
+  g=clamp(g,0,1);
+  const S=pose.stand(), C=P4.crouchHands(), P=P4.plank();
+  const q = g<.4 ? mixQ(S, C, ease(g/.4)) : mixQ(C, P, ease(clamp((g-.45)/.5, 0, 1)));
+  if(g>=.4){
+    // hips stay at squat height until both feet are back, then settle into the plank line
+    const H = mix(FOOT.crouch[1], FOOT.plank[1], ease(clamp((g-.85)/.15, 0, 1)));
+    [clamp((g-.4)/.35, 0, 1), clamp((g-.55)/.35, 0, 1)].forEach((k,i)=>{
+      const e=ease(k), z=mix(FOOT.crouch[0], FOOT.plank[0], e), y=H - .07*Math.sin(PI*k);   // foot lifts a little as it goes back
+      const [a,b]=legIK(z, y);
+      q[3+i*3]=a; q[4+i*3]=b; q[5+i*3]=mix(.2, .03, e);
+    });
+  }
+  if(g>.9) q[0] -= .025*Math.sin(PI*(g-.9)/.1);           // small dip, then brace
+  const w=plantW(g);
+  if(w>0){ const L0=q[1], fit=fitLean(q); q[1]=mix(L0, fit, w); }
+  return q;
+}
+const plantW = g=>clamp((g-.3)/.1, 0, 1);   // how firmly the hands are pinned to the ground
+function tunPose(f){
+  const m=f.tmode, g=m ? m.g : 0;
+  f.plant = !m ? 0 : m.mode==='plank' ? 1 : m.mode==='down' ? plantW(g) : m.mode==='up' ? plantW(1-g) : 0;
+  if(!m) return pose.stand();
+  switch(m.mode){
+    case 'plank': return P4.plank();
+    case 'down':  return downQ(g);
+    case 'up':    return downQ(1-g);
+    case 'roll':  return g<.7 ? mixQ(P4.standChest(), P4.crouchRoll(), ease(g/.7)) : g<1 ? P4.crouchRoll()
+                         : mixQ(P4.crouchRoll(), pose.stand(), ease(Math.min(1, (g-1)/.4)));
+    case 'pick':  return g<.5 ? mixQ(pose.stand(), P4.crouchPick(), ease(g*2)) : mixQ(P4.crouchPick(), P4.standChest(), ease(g*2-1));
+    case 'carry': return P4.standChest();
+    default:      return pose.stand();
+  }
+}
+// Layout: tunnel runs up the field (z); bodies lie across it (heads to +x). Slot j = j-th spot in
+// the tunnel; it grows at the start end (higher z) and shrinks at the far end, so it creeps up the field.
+// One turn every TT s: roll (release at u = 1), roller joins the start (lying by 3), ball stops at
+// the far end at 3, last player gets up, fetches it, runs round the feet side to the start.
+// M players: 1 roller + a tunnel of M-1. N turns = 1 set, everyone rolling once (set 2 is a repeat card).
+const TUN = { M:5, SP:.62, Z0:1.9, X:-.22, BX:0, BR:.115, TT:7, N:5, PRE:-3.2, RUNX:-1.6 };
+const slotZ  = j=>TUN.Z0 + j*TUN.SP;
+const startZ = k=>slotZ(k+TUN.M-1) + 1.05;   // roller's spot for turn k
+const endZ   = k=>slotZ(k) - 1.3;            // where the ball stops after turn k
+const TUN_END = (TUN.N-1)*TUN.TT + 5.4;
+const tunTurn = T=>{ const k=clamp(Math.floor(T/TUN.TT), 0, TUN.N-1); return { k, u:T-k*TUN.TT }; };
+function pathAt(pts, e){   // point at fraction e of the way along a polyline
+  const seg=[]; let L=0;
+  for(let i=1;i<pts.length;i++){ const d=Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]); seg.push(d); L+=d; }
+  let r=e*L;
+  for(let i=0;i<seg.length;i++){
+    if(r<=seg[i] || i===seg.length-1){ const k=seg[i] ? Math.min(1, r/seg[i]) : 1;
+      return [mix(pts[i][0], pts[i+1][0], k), mix(pts[i][1], pts[i+1][1], k)]; }
+    r-=seg[i];
+  }
+}
+// Where player p is and what they're doing at script time T. Turn k's roller is player k%M,
+// the last player in the tunnel is (k+1)%M. Small per-player offsets stop the group moving in unison.
+function tunState(p, T){
+  const M=TUN.M;
+  if(T<0){   // forming the tunnel, one after another
+    if(p===0) return { x:TUN.BX, z:startZ(0), face:PI, mode:'roll', g:0 };
+    return { x:TUN.X, z:slotZ(p-1), face:PI/2, mode:'down', g:(T-TUN.PRE-(p-1)*.18)/1.2 };
+  }
+  const { k, u } = tunTurn(T), fin = k===TUN.N-1 ? clamp((u-3.6-p*.15)/1.1, 0, 1) : 0;   // all up at the end
+  const lie = z=>({ x:TUN.X, z, face:PI/2, mode:fin ? 'up' : 'plank', g:fin });
+  if(p===k%M){
+    const S=[TUN.BX, startZ(k)], L=[TUN.X, slotZ(k+M-1)];
+    if(u<1.2) return { x:S[0], z:S[1], face:PI, mode:'roll', g:u };
+    if(u<1.8){ const e=ease((u-1.2)/.6); return { x:mix(S[0],L[0],e), z:mix(S[1],L[1],e), face:PI/2, mode:'stand' }; }
+    if(u<3)   return { x:L[0], z:L[1], face:PI/2, mode:'down', g:(u-1.8)/1.2 };
+    return lie(L[1]);
+  }
+  if(p===(k+1)%M && k<TUN.N-1){
+    const L=[TUN.X, slotZ(k)], Bp=[TUN.BX, endZ(k)+.6], S=[TUN.BX, startZ(k+1)];
+    if(u<3)   return lie(L[1]);
+    if(u<4)   return { x:L[0], z:L[1], face:PI/2, mode:'up', g:u-3 };
+    if(u<4.4){ const e=ease((u-4)/.4); return { x:mix(L[0],Bp[0],e), z:mix(L[1],Bp[1],e), face:PI, mode:'stand' }; }
+    if(u<4.8) return { x:Bp[0], z:Bp[1], face:PI, mode:'pick', g:(u-4.4)/.4 };
+    const e=ease(Math.min(1, (u-4.8)/2.2));
+    const q=pathAt([Bp, [TUN.RUNX, Bp[1]+.9], [TUN.RUNX, S[1]-.7], S], e);
+    return { x:q[0], z:q[1], face:e<.97 ? 'move' : PI, mode:'carry' };
+  }
+  let r=k-1; while(r>=0 && r%M!==p) r--;            // lying where this player last joined the tunnel
+  return lie(r>=0 ? slotZ(r+M-1) : slotZ(p-1));
+}
+// The tunnel ball: roller's hands → rolled along the ground → stops at the far end → picked up and carried
+function tunBall(T, M){
+  const { k, u } = tunTurn(T), R=figs[k%TUN.M], C=figs[(k+1)%TUN.M], E=[TUN.BX, TUN.BR, endZ(k)];
+  if(u<1){ const p=handsMid(R); p[1]=mix(p[1], TUN.BR, clamp((u-.6)/.4, 0, 1)); return p; }
+  if(u<3){
+    if(M.rk!==k){ M.rk=k; M.rel=handsMid(R); M.rel[1]=TUN.BR; }
+    const x=(u-1)/2; return lerp3(M.rel, E, 1-(1-x)*(1-x));          // slows as it rolls out
+  }
+  if(k===TUN.N-1 || u<4.6) return E;
+  if(u<4.8) return lerp3(E, handsMid(C), ease((u-4.6)/.2));
+  return handsMid(C);
+}
+
 const LUNGE = { T:2.4, S:.94 };   // seconds per rep, metres travelled per rep
 // Pelvis travel within one rep: half on the way down, half on the way up
 const lungeTravel = u=>u<.45 ? .5*ease(u/.45) : u<.6 ? .5 : .5+.5*ease((u-.6)/.4);
-const STRIDE = { run:1.9, jog:1.35 };   // metres travelled per full gait cycle
-const AMP    = { run:1,   jog:.6  };
+const STRIDE = { run:1.9, jog:1.35, walk:1.15 };   // metres travelled per full gait cycle
+const AMP    = { run:1,   jog:.6,   walk:.32  };
 
 // Forward kinematics → joint positions in the body frame
 function fk(q){
@@ -385,7 +824,8 @@ function fk(q){
   const side = [Math.cos(roll), -Math.sin(roll), 0];
   J.base = add3(J.pelvis, sc3(up,.12));   // shirt hem sits over the top of the shorts
   J.neck = add3(J.pelvis, sc3(up,B.TOR));
-  J.head = add3(J.neck,   sc3(up,B.NECK));
+  const nf=q[18]||0, fwd=[0, -Math.sin(lean), Math.cos(lean)];          // fwd: the chest's side, square to the spine
+  J.head = add3(J.neck, sc3(add3(sc3(up, Math.cos(nf)), sc3(fwd, Math.sin(nf))), B.NECK));
   [0,1].forEach(i=>{
     const s=i?1:-1, A=arm(i), cb=Math.cos(A.b), sb=Math.sin(A.b), fp=A.a+A.e;
     const sh = add3(add3(J.neck, sc3(up,-.06)), sc3(side, s*B.SHW));
@@ -422,10 +862,34 @@ function newFig(team, x, z, yaw, idle){
 
 // Moves, turns and poses one figure for this frame
 function updateFig(f, t, dt){
-  let nx=f.x, nz=f.z, lunge=null, skate=null;
-  if(f.sk){
+  let nx=f.x, nz=f.z, lunge=null, skate=null, hop=null, spider=null, rollQ=null;
+  f.rollRot=null;
+  if(f.rl){
+    // Sideways roll: the script sets position, pose and the whole-body rotation; walking back uses the gait
+    const S=f.rl;
+    if(t>=S.t0) S.prog = Math.min(S.prog + dt*S.speed, RL.END + S.lag + .5);
+    const r=rollState(S, S.prog); nx=r.x; nz=r.z; f.face=r.face; f.rollRot=r.rot; f.rollPath=r.path; rollQ=r.q;
+  } else if(f.spd){
+    // Spiderman: the script sets position, pose, hand pins and the ball
+    const S=f.spd;
+    if(t>=S.t0) S.prog = Math.min(S.prog + dt*S.speed, SP_END);
+    spider=spState(S, S.prog); nx=spider.x; nz=spider.z;
+    f.plant=spider.plant; f.pinW=spider.pinW; f.ballW=spider.ball;
+  } else if(f.hp){
+    // Single-leg jumps: the hop sequence sets position and pose directly
+    hop=hopStep(f, t, dt); nx=hop.x; nz=hop.z;
+  } else if(f.sk){
     // Skating jumps: the jump sequence sets position and pose directly
     skate=skateStep(f, t, dt); nx=skate.x; nz=skate.z;
+  } else if(f.tun){
+    // Press-up tunnel: the tunnel script sets position, facing and what the player is doing
+    const T=f.tun;
+    if(t>=T.t0) T.prog = Math.min(T.prog + dt*T.speed, TUN_END);
+    const s=tunState(f.pi, T.prog); nx=s.x; nz=s.z; f.face=s.face; f.tmode=s;
+  } else if(f.al){
+    // Alertness game: the call script sets the run and the one-leg stance
+    const a=alertStep(f, t, dt); nz=a.z;
+    if(a.idle!==f.idle){ f.idle=a.idle; f.idleClock=0; }
   } else if(f.act){
     // Walking lunges: rep by rep along the facing direction, left leg leading first.
     // prog counts reps done; speed > 1 fast-forwards.
@@ -453,6 +917,9 @@ function updateFig(f, t, dt){
   // Travel direction vs facing picks the gait: forwards, backwards or sideways
   let target;
   if(skate) target=skate.q;
+  else if(hop) target=hop.q;
+  else if(spider) target=spider.q;
+  else if(rollQ) target=rollQ;
   else if(lunge) target=pose.lunge(lunge.u, lunge.lead);
   else if(sp>.45){
     const d=(vx*Math.sin(f.yaw)+vz*Math.cos(f.yaw))/sp;
@@ -465,11 +932,15 @@ function updateFig(f, t, dt){
   } else {
     // idle poses can play out over time (nordic, toe raises); idleSpeed > 1 fast-forwards them
     f.idleClock = (f.idleClock||0) + dt*(f.idleSpeed||1);
-    target = pose[f.idle](f.idleClock);
+    target = f.poseFn ? f.poseFn(f, t, dt) : pose[f.idle](f.idleClock);   // poseFn: exercise-driven pose (e.g. throwing)
   }
 
+  // carrying the ball while running: arms hold it at the chest
+  if(f.tmode && f.tmode.mode==='carry' && f.tun){ target=target.slice(); for(let i=0;i<3;i++){ target[9+i]=ARM.chest[i]; target[12+i]=ARM.chest[i]; } }
+
   // rate: how quickly the body moves into its next pose (lower = slower, e.g. kneeling down)
-  const r = 1-Math.exp(-dt*(f.sk ? 40*f.sk.speed : f.act ? 16*f.act.speed : f.rate||16));   // keeps up when fast-forwarded
+  const r = 1-Math.exp(-dt*(f.sk ? 40*f.sk.speed : f.hp ? 40*f.hp.speed : f.spd ? 30*f.spd.speed : f.rl ? 30*f.rl.speed : f.act ? 16*f.act.speed : f.thr && f.thr.go ? 24*f.thr.speed
+                           : f.tun ? 24*f.tun.speed : f.rate||16));   // keeps up when fast-forwarded
   for(let i=0;i<f.q.length;i++) f.q[i] += (target[i]-f.q[i])*r;
   f.lift = f.q[0];
 }
@@ -488,6 +959,12 @@ function dotItem(cam, c, rM, color, bias){
   return { z:C[2]+(bias||0), raw:C[2], d:`M${C[0].toFixed(1)} ${C[1].toFixed(1)}h.01`,
            stroke:color, w:(2*rM*cam.f/C[2]).toFixed(2) };
 }
+function ringItem(cam, c, rM, color){   // flat ring on the ground (highlight)
+  const P=[]; for(let i=0;i<=24;i++){ const a=i/24*2*PI; P.push(project(cam, [c[0]+rM*Math.cos(a), c[1], c[2]+rM*Math.sin(a)])); }
+  if(P.some(p=>p[2]<.6)) return null;
+  const C=project(cam,c);
+  return { z:C[2]-.4, raw:C[2], d:'M'+P.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L'), stroke:color, w:(.03*cam.f/C[2]).toFixed(2) };
+}
 function coneItem(cam, x, z){
   const P=[[x-.13,0,z],[x+.13,0,z],[x,.3,z]].map(p=>project(cam,p));
   if(P.some(p=>p[2]<.6)) return null;
@@ -496,13 +973,40 @@ function coneItem(cam, x, z){
 
 // guide = true: hip–knee–ankle line over each leg; 'body': one line knees → hips → shoulders → head
 function figureItems(cam, f, items, guide){
-  const J=fk(f.q), s=Math.sin(f.yaw), c=Math.cos(f.yaw), tc=TEAM[f.team];
+  const J=bodyJ(f), s=Math.sin(f.yaw), c=Math.cos(f.yaw), tc=TEAM[f.team];
   const W = b=>worldOf(f, b);
   const push = it=>{ if(it) items.push(it); };
   if(guide==='body'){
     const pts=[lerp3(W(J.knee0),W(J.knee1),.5), W(J.pelvis), W(J.neck), W(J.head)];
     for(let k=0;k<3;k++) push(segItem(cam, pts[k], pts[k+1], .03, GUIDE, -.35));
     pts.forEach(p=>push(dotItem(cam, p, .05, GUIDE, -.36)));
+    guide=false;
+  }
+  if(guide==='hands'){   // both hands on the ground, in front of the knees: ring each hand, line from knee to hand
+    [0,1].forEach(i=>{
+      const h=W(J['hand'+i]), kn=W(J['knee'+i]), g=[h[0], .02, h[2]];
+      push(segItem(cam, kn, g, .025, GUIDE, -.35));
+      push(dotItem(cam, kn, .04, GUIDE, -.36));
+      push(ringItem(cam, g, .11, GUIDE));
+    });
+    guide=false;
+  }
+  if(guide==='chin'){    // chin tucked to the chest: head → chest marker
+    const hd=W(J.head), ch=W(lerp3(J.neck, J.base, .3));
+    push(segItem(cam, hd, ch, .03, GUIDE, -.35));
+    [hd,ch].forEach(p=>push(dotItem(cam, p, .055, GUIDE, -.36)));
+    guide=false;
+  }
+  if(guide==='roll'){    // the diagonal roll path on the ground, and the body part touching the ground right now
+    if(f.rollPath){
+      const [a,b]=f.rollPath;
+      push(segItem(cam, [a[0],.01,a[1]], [b[0],.01,b[1]], .03, GUIDE, .3));
+      push(ringItem(cam, [b[0],.01,b[1]], .1, GUIDE));
+    }
+    if(f.rollRot){
+      let lk=null, lv=9; Object.keys(J).forEach(k=>{ const v=J[k][1]-(RAD[k]||.05); if(v<lv){ lv=v; lk=k; } });
+      push(dotItem(cam, W(J[lk]), .07, GUIDE, -.4));
+    }
     guide=false;
   }
   [0,1].forEach(i=>{
@@ -528,6 +1032,10 @@ function figureItems(cam, f, items, guide){
     const sh=W(J['sh'+i]);
     let el=W(J['el'+i]), ha=W(J['hand'+i]);
     if(f.grip){ const k=i?1:-1; [el,ha]=ikArm(sh, f.grip[i], [c*k, .6, -s*k]); }   // hands on the partner's legs
+    else if(f.plant){   // hands planted on the ground: world pins (f.pinW) or under the shoulders' plank spot
+      const k=i?1:-1, pin=f.pinW ? f.pinW[i] : W([k*.2, .02, .44]);
+      [el,ha]=ikArm(sh, lerp3(ha, pin, f.plant), [c*k*.6 - s*.5, .2, -s*k*.6 - c*.5]);   // elbows out and back
+    }
     const sl=lerp3(sh,el,.55);
     push(segItem(cam, sl, el, .085, SKIN));
     push(segItem(cam, sh, sl, .105, tc, -.001));
@@ -542,7 +1050,7 @@ function figureItems(cam, f, items, guide){
   push(dotItem(cam, [H[0]-hs*.04, H[1]+.035, H[2]-hc*.04], .112, HAIR, -.005));
   [-1,1].forEach(k=>{
     const eye=dotItem(cam, [H[0]+hs*.1+hc*k*.045, H[1]+.01, H[2]+hc*.1-hs*k*.045], .022, '#111', -.03);
-    if(eye && head && eye.raw < head.raw) items.push(eye);
+    if(eye && head && eye.raw < head.raw && !(f.rollRot && f.rollRot.th>.3)) items.push(eye);   // face is tucked away mid-roll
   });
 }
 
@@ -611,17 +1119,20 @@ function setCam(cam, A, Bp, w){
 
 // ╔══════════════════════════════════════════════════════════════════╗
 // ║  DRILL — Physical Fundamentals Warm Up                           ║
+// ║  Exercise 1: Alertness running game — listen for the stop command║
 // ║  Exercise 2: Skating jumps — learning how to land                ║
 // ╚══════════════════════════════════════════════════════════════════╝
 // 9v9 field: penalty area 14 yds deep × 36 wide, halfway 37.5 yds from the goal line.
 // Work area: goal line (z = 0) to the edge of the penalty area, 10 yds wide.
-// Players start on the goal line about 2 m apart and jump up the field towards the edge of the box.
+// Ex 1: players run from the goal line at the coach, who stands just outside the penalty area.
+// Ex 2: players start on the goal line about 2 m apart and jump up the field towards the edge of the box.
 const YD = .9144;
 const PA_D = 14*YD, PA_X = 18*YD, TOUCH_X = 25*YD, HALF_Z = 37.5*YD, CIRCLE_R = 8*YD, LW = .06;
 const AW = 5*YD;                                   // half of the 10-yd width
 const LANES = [-3,-1,1,3];                         // 2 m apart: the centre line of each player's zig-zag
 const START = LANES.map(x=>x+SK.A);                // standing on the right leg = right side of the line
 const CONES = [[-AW,0],[AW,0],[-AW,PA_D],[AW,PA_D]];
+const COACH_Z = PA_D + 1.5;                        // Ex 1: coach just outside the penalty area
 
 // Field markings as thin ground quads (world space, so they foreshorten correctly)
 const quad = (x0,z0,x1,z1)=>[[x0,0,z0],[x1,0,z0],[x1,0,z1],[x0,0,z1]];
@@ -641,7 +1152,9 @@ const LABELS = [
   { text:'14 yds',               cls:'dim',  at:[AW+2.2, 0, PA_D/2] },
   { text:'10 yds',               cls:'dim',  at:[0, 0, PA_D+2] },
   { text:'Goal line',            cls:'name', at:[AW+4, 0, -1.4] },          // overview looks back at the goal,
-  { text:'Edge of penalty area', cls:'name', at:[-AW-5, 0, PA_D-1.4] }      // so +x is screen-left
+  { text:'Edge of penalty area', cls:'name', at:[-AW-5, 0, PA_D-1.4] },     // so +x is screen-left
+  { text:'Coach',                cls:'name', at:[0, 2.3, COACH_Z], part:'1' },
+  { text:'3–5 m',                cls:'dim',  at:[2.65, 0, 8.6], part:'3' }
 ];
 
 // Per phase: z = where the group stands, face = body direction, view = follow-camera heading,
@@ -649,13 +1162,73 @@ const LABELS = [
 // skate = number of jumps in the set; keep:true = cue changes but the set already under way carries on.
 // speed > 1 fast-forwards; reps = set number shown on the jump counter.
 // hold = seconds before Auto moves to the next phase. part = which heading/banner is shown.
+// al = the coach's calls for one set of the alertness game (R / L), xs = each player's start x.
 const PARTS = {
-  '2':{ title:'Physical Fundamentals — Exercise 2', name:'Skating Jumps', time:'2 × 10 Jumps' }
+  '1':{ title:'Physical Fundamentals Level 1 · Ex 1', name:'Alertness Running Game', time:'3 × 5 Stops', coach:true },
+  '2':{ title:'Physical Fundamentals Level 1 · Ex 2', name:'Skating Jumps', time:'2 × 10 Jumps' },
+  '3':{ title:'Physical Fundamentals Level 1 · Ex 3', name:'Single-Leg Stance', time:'5 Throws Per Leg' },
+  '4':{ title:'Physical Fundamentals Level 1 · Ex 4', name:'Press-Ups: Tunnel', time:'2 Sets', n:5 },
+  '5':{ title:'Physical Fundamentals Level 1 · Ex 5', name:'Single-Leg Jumps', time:'2 × 10 Jumps' },
+  '6':{ title:'Physical Fundamentals Level 1 · Ex 6', name:'Spiderman', time:'3 × 15 Seconds' },
+  '7':{ title:'Physical Fundamentals Level 1 · Ex 7', name:'Sideways Roll', time:'5 Rolls Per Side' }
 };
+// Ex 7: rolls go diagonally forwards-right; the camera sits front-left, square to the roll, so it's seen side-on
+const ROLLCAM   = { offset:-.95, dist:7.5, height:2.2 };
+const ROLLCLOSE = { offset:-.95, dist:4.2, height:1.5 };   // in close on the nearest player
+// Ex 6: camera in front and round to the side, low enough to see under the table-top
+const SPCAM   = { offset:.7, dist:6.8, height:1.9 };
+const SPCLOSE = { offset:.85, dist:3.4, height:1.3 };   // in close on the nearest player
+// Ex 5: camera in front of the group and well round to the side, so the length of each hop shows
+const HOPCAM = { offset:.75, dist:9.5, height:2.3 };
+// n = players in use for that part (default 4); extra players wait off the area, hidden.
+const partPlayers = ph=>PARTS[ph.part].n || 4;
+// Ex 4: player 0 starts with the ball at the start of the tunnel, players 1–4 form it.
+// Camera low, off the heads' side and the far end, so the ball can be seen rolling underneath.
+const TUNNEL = { xs:[TUN.BX, TUN.X, TUN.X, TUN.X, TUN.X], zs:[startZ(0), slotZ(0), slotZ(1), slotZ(2), slotZ(3)],
+                 faces:[PI, PI/2, PI/2, PI/2, PI/2] };
+const TUNCAM = { offset:.45, dist:6.5, height:1.7 };
+// Ex 3 pairs: throwing across the field (along x) so the camera in front sees them side-on.
+// Pair 1 = players 0 & 1 (further back), pair 2 = players 2 & 3; 3.5 m apart, facing each other.
+const PAIRS = [{ a:0, b:1 }, { a:2, b:3 }];
+const PAIR = { xs:[-4.4,-.9,.9,4.4], zs:[3.5,3.5,7.5,7.5], faces:[PI/2,-PI/2,PI/2,-PI/2] };
+const PAIRCAM = { offset:.12, dist:10.5, height:3.4 };
+const CLOSE   = { offset:.15, dist:6,    height:2.4 };   // in close on the near pair
 const J = 10;   // jumps per set: alternating legs, so 5 landings on each
 // Camera in front of the group, a little to the side, high enough to see the zig-zag
 const FOLLOW = { offset:.3, dist:11, height:2.6, f:300, cy:245 };
+// Ex 1: camera behind the group, three-quarter on, looking up the field at the coach
+const REAR = { offset:.55, dist:8.5, height:2.6 };
+const SET1=['R','L','R','R','L'];
+// Each exercise demos ONE set; further sets are a repeat card (card:{k,big,sub}) rather than animated again.
 const phases = [
+  // ── Exercise 1: Alertness running game ──
+  { part:'1', cue:"Area: 14 × 10 yds", labels:true, cam:'overview',
+    desc:"Goal line to the edge of the penalty area on a 9v9 field. Players spread along the goal line about 2 metres apart; the coach stands just outside the penalty area.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand' },
+  { part:'1', cue:"“Run!”\nStraight at the coach", cam:'follow', al:SET1, reps:1, delay:1, style:'run', rate:10,
+    desc:"On the coach's command, everyone runs straight ahead towards the coach.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand', hold:2.6 },
+  { part:'1', cue:"“Right!” or “Left!”\nStop on that leg — hold 3 secs", cam:'follow', al:SET1, reps:1, keep:true,
+    desc:"The coach calls “right” or “left”: stop and stand on that leg, holding the balance for around 3 seconds.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand', hold:4.8 },
+  { part:'1', cue:"Supporting knee soft\nArms out for balance", guide:true, cam:'follow', al:SET1, reps:1, keep:true,
+    desc:"The knee of the supporting leg should not be fully extended, and the arms can be used for balance.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand', hold:4.8 },
+  { part:'1', cue:"Hop to find the balance\nFoot down = jog back", cam:'follow', al:SET1, reps:1, keep:true,
+    desc:"Players can hop until they find their balance. Not on one leg, or the other foot touches down within 3 seconds? That player jogs back to the goal line.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand', hold:4.8 },
+  { part:'1', cue:"5 stop commands per set", cam:'follow', al:SET1, reps:1, keep:true, speed:3, ff:true,
+    desc:"The coach keeps giving the command to run and stop — 5 stops in the set, mixing up right and left.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand', hold:3.6 },
+  { part:'1', cue:"Jog back to the goal line", cam:'follow',
+    desc:"Set 1 done. All players jog back to the goal line.",
+    z:0, face:PI, view:PI, follow:REAR, xs:LANES, idle:'stand', dur:5.5, delay:.6, hold:6.6 },
+  { part:'1', cue:"", cam:'follow',
+    card:{ k:'Repeat', big:'2 more sets', sub:'3 sets in total, 5 stop commands per set.<br>Mix up the right and left calls.' },
+    desc:"Repeat for 3 sets of 5 stop commands, jogging back to the goal line after each set.",
+    z:0, face:0, view:PI, follow:REAR, xs:LANES, idle:'stand', hold:4.6 },
+
+  // ── Exercise 2: Skating jumps ──
   { part:'2', cue:"Area: 14 × 10 yds", labels:true, cam:'overview',
     desc:"Goal line to the edge of the penalty area on a 9v9 field (14 yds). Players spread out along the goal line, about 2 metres apart.",
     z:0, face:0, view:0, idle:'stand' },
@@ -677,34 +1250,168 @@ const phases = [
   { part:'2', cue:"Jog back to the goal line", cam:'follow',
     desc:"Set 1 done. Jog back to the goal line, ready for the second set.",
     z:0, face:PI, view:0, idle:'stand', dur:5.5, delay:.6, hold:6.6 },
-  { part:'2', cue:"Set 2 — right leg again", cam:'follow', rate:5,
-    desc:"Turn to face up the field and stand on the right leg again, waiting for the command.",
-    z:0, face:0, view:0, idle:'skHoldR', hold:2.8 },
-  { part:'2', cue:"Set 2 — 10 more jumps", cam:'follow', skate:J, reps:2, speed:3, ff:true, delay:.5,
-    desc:"Second set of 10 jumps, alternating legs: a soft, balanced landing every time.",
-    z:0, face:0, view:0, idle:'skHoldR', hold:9.4 },
-  { part:'2', cue:"Skating jumps complete", cam:'follow',
-    desc:"2 sets of 10 jumps done — 10 landings on each leg.",
-    z:J*SK.D, face:0, view:0, idle:'stand', hold:4 }
+  { part:'2', cue:"", cam:'follow',
+    card:{ k:'Repeat', big:'1 more set', sub:'2 sets of 10 jumps — 5 landings on each leg.' },
+    desc:"Repeat for a second set of 10 jumps, alternating legs: a soft, balanced landing every time.",
+    z:0, face:0, view:0, idle:'stand', hold:4.6 },
+
+  // ── Exercise 3: Single-leg stance — throwing the ball ──
+  { part:'3', cue:"Pairs: 3–5 m apart", labels:true, cam:'overview',
+    desc:"Players pair up and stand opposite each other, 3–5 metres apart. Start at the shorter distance.",
+    ...PAIR, z:0, view:0, follow:PAIRCAM, idle:'stand', dur:3, hold:4.2 },
+  { part:'3', cue:"Stand on the right leg\nFace your partner", cam:'follow', thr:{ st:1 }, ball:true, rate:6,
+    desc:"Both partners stand on the right leg, supporting knee soft. One partner starts with the ball.",
+    ...PAIR, z:0, view:0, follow:PAIRCAM, idle:'stand', hold:3 },
+  { part:'3', cue:"Take turns to throw\nSimple two-hand throw", cam:'follow', thr:{ st:1, go:true }, ball:true, reps:1, keep:true,
+    delay:.3, focus:[2,3],
+    desc:"Take it in turns to throw the ball to each other. Keep the throwing technique simple to begin with.",
+    ...PAIR, z:0, view:0, follow:CLOSE, idle:'stand', hold:5.4 },
+  { part:'3', cue:"Catch it — stay on one leg", guide:true, cam:'follow', thr:{ st:1, go:true }, ball:true, reps:1, keep:true,
+    focus:[2,3],
+    desc:"Catch without putting the free foot down: hip, knee and ankle stay in line over the supporting foot.",
+    ...PAIR, z:0, view:0, follow:CLOSE, idle:'stand', hold:5.2 },
+  { part:'3', cue:"5 throws each", cam:'follow', thr:{ st:1, go:true }, ball:true, reps:1, keep:true, speed:3, ff:true,
+    desc:"Keep going until each player has thrown 5 times — 10 throws in the pair.",
+    ...PAIR, z:0, view:0, follow:PAIRCAM, idle:'stand', hold:6.2 },
+  { part:'3', cue:"", cam:'follow', thr:{ st:1, go:true }, ball:true, keep:true,
+    card:{ k:'Swap legs', big:'Left leg', sub:'Same again on the left leg — 5 throws each.<br>Later: one hand, harder throws.' },
+    desc:"1 set on each leg. Later on, bring in other throws: both hands, one hand, a harder throw.",
+    ...PAIR, z:0, view:0, follow:PAIRCAM, idle:'stand', hold:4.6 },
+
+  // ── Exercise 4: Press-ups — tunnel ──
+  // tun.from = script start time (negative = forming the tunnel first); keep:true lets the script run on.
+  { part:'4', cue:"Groups of up to 8", labels:true, cam:'overview',
+    desc:"One player stands at the start with the ball. The rest line up side by side, close together.",
+    ...TUNNEL, z:0, view:PI/2, follow:TUNCAM, idle:'stand', dur:3, hold:4.4 },
+  { part:'4', cue:"Press-up position\nForm a tunnel", guide:'body', cam:'follow', tun:{ from:TUN.PRE }, ball:true,
+    desc:"Get into the press-up position close to each other to form a tunnel: hands and feet hip-width apart, body in one straight line.",
+    ...TUNNEL, z:0, view:PI/2, follow:TUNCAM, idle:'stand', hold:3.2 },
+  { part:'4', cue:"Roll the ball through", cam:'follow', tun:{}, keep:true, ball:true, reps:1,
+    desc:"The standing player rolls the ball down the tunnel…",
+    ...TUNNEL, z:0, view:PI/2, follow:TUNCAM, idle:'stand', hold:3 },
+  { part:'4', cue:"Join the start\nLast player fetches the ball", cam:'follow', tun:{}, keep:true, ball:true, reps:1,
+    desc:"…then gets down at the start of the tunnel. Once the ball is through, the last player takes it, runs to the start and rolls it through.",
+    ...TUNNEL, z:0, view:PI/2, follow:TUNCAM, idle:'stand', hold:4 },
+  { part:'4', cue:"Everyone rolls once", cam:'follow', tun:{}, keep:true, ball:true, reps:1, speed:3, ff:true,
+    desc:"Keep going until every player has rolled the ball once. The tunnel creeps up the field as it goes.",
+    ...TUNNEL, z:0, view:PI/2, follow:TUNCAM, idle:'stand', hold:9.2 },
+  { part:'4', cue:"", cam:'follow', tun:{}, keep:true, ball:true,
+    card:{ k:'Repeat', big:'1 more set', sub:'2 sets — every player rolls the ball once per set.<br>Make it a race between two groups (max 8).' },
+    desc:"Repeat for a second set. Can be turned into a race between two groups (max 8 per group).",
+    ...TUNNEL, z:0, view:PI/2, follow:TUNCAM, idle:'stand', hold:4.6 },
+
+  // ── Exercise 5: Single-leg jumps — forwards ──
+  // hop = a set of 10 single-leg jumps (5 right, then 5 left); keep:true lets the set carry on.
+  { part:'5', cue:"Goal line, 2 m apart", labels:true, cam:'overview',
+    desc:"Players stand on the goal line with clear space between them — about 2 metres apart.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'stand', dur:3, hold:4.4 },
+  { part:'5', cue:"Stand on the right leg", cam:'follow', rate:6,
+    desc:"Everyone stands on one leg, the right leg first, ready for the coach's command.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'hopHoldR', hold:3 },
+  { part:'5', cue:"“Jump!”\nAs far as possible", cam:'follow', hop:true, reps:1, delay:.6,
+    desc:"On the coach's command, jump forwards on one leg — make the jump as long as possible.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'hopHoldR', hold:2.6 },
+  { part:'5', cue:"Land on the same leg\nStand still — 3 secs", guide:true, cam:'follow', hop:true, reps:1, keep:true,
+    desc:"Land on the same leg with the knee bent to absorb the landing, then stand still for around 3 seconds.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'hopHoldR', hold:3.8 },
+  { part:'5', cue:"5 jumps on the right leg", cam:'follow', hop:true, reps:1, keep:true, speed:3, ff:true,
+    desc:"Jump, land, hold — 5 jumps on the right leg.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'hopHoldR', hold:5.2 },
+  { part:'5', cue:"Swap: 5 on the left leg", cam:'follow', hop:true, reps:1, keep:true, speed:3, ff:true,
+    desc:"Then swap: 5 jumps on the left leg — 10 jumps in the set.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'hopHoldR', hold:7.8 },
+  { part:'5', cue:"Walk slowly back", cam:'follow', ff:true, style:'walk',
+    desc:"Set complete: walk slowly back to the goal line.",
+    xs:LANES, z:0, face:PI, view:0, follow:HOPCAM, idle:'stand', dur:4.5, delay:.3, hold:5.2 },
+  { part:'5', cue:"", cam:'follow',
+    card:{ k:'Repeat', big:'1 more set', sub:'2 sets: 5 jumps on the right leg, then 5 on the left.' },
+    desc:"Repeat for a second set, walking slowly back to the goal line afterwards.",
+    xs:LANES, z:0, face:0, view:0, follow:HOPCAM, idle:'stand', hold:4.6 },
+
+  // ── Exercise 6: Spiderman — stroking the ball ──
+  // spd = the set script (get down, 15 s of alternating ball touches, get up); restBalls = balls waiting
+  // in front of the feet before the script starts. keep:true lets the script run on.
+  { part:'6', cue:"A ball in front of the feet", labels:true, cam:'overview', ball:true, restBalls:true,
+    desc:"Each player has a ball, placed directly in front of the feet.",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCAM, idle:'stand', dur:2.5, hold:4.2 },
+  { part:'6', cue:"Hands and feet down\nHips low, eyes on the ball", cam:'follow', ball:true, spd:true,
+    desc:"Hands and feet on the ground, hip-width apart, back towards the ground and kept low — chin tucked so the eyes stay on the ball.",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCAM, idle:'stand', hold:3 },
+  { part:'6', cue:"Lift one leg\nRoll the ball forwards…", cam:'follow', ball:true, spd:true, keep:true, reps:1, focus:[3],
+    desc:"Lift one leg, put the foot on the ball and roll it gently forwards…",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCLOSE, idle:'stand', hold:2.5 },
+  { part:'6', cue:"…and backwards\nSlow and deliberate", cam:'follow', ball:true, spd:true, keep:true, reps:1, focus:[3],
+    desc:"…and then backwards. Slow, deliberate movements, eyes on the ball the whole time.",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCLOSE, idle:'stand', hold:2.5 },
+  { part:'6', cue:"Other leg — then alternate", cam:'follow', ball:true, spd:true, keep:true, reps:1,
+    desc:"Repeat with the other leg, then keep alternating the movement with each leg.",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCAM, idle:'stand', hold:4.8 },
+  { part:'6', cue:"15 seconds per set", cam:'follow', ball:true, spd:true, keep:true, reps:1, speed:3, ff:true,
+    desc:"Keep alternating legs for 15 seconds, then sit back and stand up.",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCAM, idle:'stand', hold:3 },
+  { part:'6', cue:"", cam:'follow', ball:true, spd:true, keep:true,
+    card:{ k:'Repeat', big:'2 more sets', sub:'3 sets of 15 seconds, alternating legs.' },
+    desc:"Repeat for 3 sets of 15 seconds each.",
+    xs:LANES, z:1.5, face:0, view:0, follow:SPCAM, idle:'stand', hold:4.6 },
+
+  // ── Exercise 7: Sideways roll — squatting position ──
+  // roll = the roll script (squat, pause, tuck, pause, then 10 rolls alternating right/left); keep:true lets it run on.
+  // guide 'hands' / 'chin' / 'roll' = the highlights on the nearest player.
+  { part:'7', cue:"About 2 m apart", labels:true, cam:'overview',
+    desc:"Players spread out, about 2 metres apart, with room to roll to the side.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCAM, idle:'stand', dur:2.5, hold:4.2 },
+  { part:'7', cue:"Squat — both hands on the\nground in front of the knees", guide:'hands', cam:'follow', roll:true, delay:.6, focus:[0],
+    desc:"Squat and put both hands on the ground in front of the knees.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCLOSE, idle:'stand', hold:3.9 },
+  { part:'7', cue:"Chin nearly touching\nthe chest", guide:'chin', cam:'follow', roll:true, keep:true, focus:[0],
+    desc:"Lower the head so the chin nearly touches the chest.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCLOSE, idle:'stand', hold:2.7 },
+  { part:'7', cue:"Roll to the right — over the\narm, shoulder and back", guide:'roll', cam:'follow', roll:true, keep:true, reps:1, focus:[0],
+    desc:"Roll diagonally over the right arm, the shoulder and then the back, staying curled up, and come up into the squat.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCLOSE, idle:'stand', hold:2.35 },
+  { part:'7', cue:"…then roll to the left", guide:'roll', cam:'follow', roll:true, keep:true, reps:1, focus:[0],
+    desc:"Straight from the squat, roll back the other way over the left arm, shoulder and back.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCLOSE, idle:'stand', hold:2.75 },
+  { part:'7', cue:"Right, left — keep alternating", cam:'follow', roll:true, keep:true, reps:1,
+    desc:"Keep alternating, right then left, coming up into the squat between rolls.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCAM, idle:'stand', hold:5.5 },
+  { part:'7', cue:"5 rolls per side", cam:'follow', roll:true, keep:true, reps:1, speed:3, ff:true,
+    desc:"Keep alternating until each player has done 5 rolls to each side, then stand up.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCAM, idle:'stand', hold:6.2 },
+  { part:'7', cue:"", cam:'follow', roll:true, keep:true,
+    card:{ k:'Total', big:'5 rolls per side', sub:'Alternate right and left, coming up into the squat between rolls.' },
+    desc:"5 rolls per side, alternating right and left.",
+    xs:LANES, z:2, face:0, view:0, follow:ROLLCAM, idle:'stand', hold:4.2 }
 ];
 
 const cam = { cx:180, cy:250, f:300, yaw:0, pitch:0, pos:[0,0,0], blend:0, blendTarget:0,
   follow:  { offset:.3, dist:11, height:2.6, lookY:.9, f:300, cy:245, heading:0, headingTarget:0, mx:0, mz:0, fixX:0, target:{} },
   overview:{ pos:[8, 12, PA_D+13], look:[0, 0, PA_D/2-1], f:380, cy:215 } };
 const figs = START.map(x=>{ const f=newFig('red', x, 0, 0, 'stand'); f.style='jog'; return f; });
-const pool = makePool('pool', 220);
-const shadows = makeShadows('shadows', figs.length);
+figs.push(Object.assign(newFig('red', -7.5, 3.5, PI/2, 'stand'), { style:'jog', hidden:true }));   // 5th player (Ex 4) waits off the area
+const shown = ()=>figs.filter(f=>!f.hidden);
+const coach = newFig('coach', 0, COACH_Z, PI, 'stand');
+coach.rate = 10;
+const pool = makePool('pool', 260);
+const shadows = makeShadows('shadows', figs.length+1+PAIRS.length);   // then the coach's, then one per ball
+const ballShadows = makeShadows('shadows', figs.length);              // each player's own ball (Ex 6)
+const callEl = document.getElementById('call');
 const labelEls = LABELS.map(L=>{
   const el=document.createElementNS(SVGNS,'text');
   el.setAttribute('class', L.cls); el.textContent=L.text;
   document.getElementById('labels').appendChild(el);
   return el;
 });
-let guideOn = false, repsOn = 0;
+let guideOn = false, repsOn = 0, coachOn = false, ballsOn = false;
+const tunMem = {};   // tunnel ball: remembers where each roll was released
+const camFigs = ph=>ph.focus ? ph.focus.map(i=>figs[i]) : shown();
 
 function applyScene(idx, t, snap){
   const ph=phases[idx];
   guideOn = ph.guide||false;
+  coachOn = !!PARTS[ph.part].coach;
+  ballsOn = !!ph.ball;
+  cam.follow.fixX = ph.focus ? null : 0;   // focus: centre the camera on those players
   const lab=document.getElementById('labels');
   if(ph.labels) retrigger(lab,'show'); else lab.classList.remove('show');
   document.getElementById('ff').classList.toggle('show', !!ph.ff);
@@ -714,10 +1421,62 @@ function applyScene(idx, t, snap){
   cam.follow.target = { ...FOLLOW, ...(ph.follow||{}) };
   cam.blendTarget = ph.cam==='follow' ? 1 : 0;
   figs.forEach((f,i)=>{
-    const s = { x:START[i], z:ph.z, face:ph.face, idle:ph.idle };
+    // players beyond this part's count stand aside, hidden, until a part needs them
+    f.hidden = i>=partPlayers(ph);
+    if(f.hidden){ f.mv=null; f.sk=null; f.al=null; f.call=null; f.thr=null; f.tun=null; f.tmode=null; f.poseFn=null; f.plant=0; return; }
+    const s = { x:(ph.xs||START)[i], z:ph.zs ? ph.zs[i] : ph.z, face:ph.faces ? ph.faces[i] : ph.face, idle:ph.idle };
+    // al + keep: the alertness set already under way carries on (speed can change)
+    if(!snap && ph.al && ph.keep && f.al){ f.al.speed=f.idleSpeed=ph.speed||1; return; }
+    // tun + keep: the tunnel script carries on (speed can change)
+    if(!snap && ph.tun && ph.keep && f.tun){ f.tun.speed=ph.speed||1; return; }
+    // hop + keep: the jump set carries on (speed can change)
+    if(!snap && ph.hop && ph.keep && f.hp){ f.hp.speed=ph.speed||1; return; }
+    // spd + keep: the Spiderman set carries on (speed can change)
+    if(!snap && ph.spd && ph.keep && f.spd){ f.spd.speed=ph.speed||1; return; }
+    // roll + keep: the rolls carry on (speed can change)
+    if(!snap && ph.roll && ph.keep && f.rl){ f.rl.speed=ph.speed||1; return; }
+    // thr on the same leg: the throwing set carries on; go:true starts it if it hasn't started yet
+    if(!snap && ph.thr && f.thr && f.thr.st===ph.thr.st){
+      if(ph.thr.go && !f.thr.go){ f.thr.go=true; f.thr.t0=t+(ph.delay||0); }
+      f.thr.speed=ph.speed||1;
+      return;
+    }
     if(f.idle!==s.idle) f.idleClock=0;
-    f.face=s.face; f.idle=s.idle; f.rate=ph.rate;
-    if(snap){ f.x=s.x; f.z=s.z; f.mv=null; f.act=null; f.sk=null; f.yaw=s.face; f.idleClock=0; f.q=pose[s.idle](0); return; }
+    f.face=s.face; f.idle=s.idle; f.rate=ph.rate; f.style=ph.style||'jog'; f.idleSpeed=1;
+    f.thr = ph.thr && !snap ? { st:ph.thr.st, isA:i%2===0, go:!!ph.thr.go, t0:t+(ph.delay||0), speed:ph.speed||1, prog:0, ph:i*1.7 } : null;
+    f.poseFn = f.thr ? thrPose : null;
+    f.tun=null; f.tmode=null; f.plant=0; f.hp=null; f.spd=null; f.pinW=null; f.rl=null; f.rollRot=null; f.rollPath=null;
+    if(ph.roll && !snap){   // 10 sideways rolls from this spot, alternating right and left
+      f.mv=null; f.sk=null; f.act=null; f.al=null; f.call=null;
+      f.rl={ t0:t+(ph.delay||0), x0:f.x, z0:f.z, prog:0, speed:ph.speed||1, lag:i*.25 };
+      return;
+    }
+    f.ballW = ph.restBalls ? [s.x, SPD.BR, s.z+SPD.BALL] : null;   // own ball waiting in front of the feet
+    if(ph.spd && !snap){   // Spiderman set from where the player stands (feet stay on this spot)
+      f.mv=null; f.sk=null; f.act=null; f.al=null; f.call=null;
+      f.spd={ t0:t+(ph.delay||0), x0:f.x, footZ:f.z, prog:SPD.PRE, speed:ph.speed||1, lag:i*.2 };
+      return;
+    }
+    if(ph.hop && !snap){   // a set of single-leg jumps from where the player stands, right leg first
+      f.mv=null; f.sk=null; f.act=null; f.al=null; f.call=null;
+      f.hp={ t0:t+(ph.delay||0), x0:f.x, f0:f.z+ankZ(HOPP.hold(1),1), s0:1, speed:ph.speed||1, prog:0 };
+      return;
+    }
+    if(snap){ f.x=s.x; f.z=s.z; f.mv=null; f.act=null; f.sk=null; f.al=null; f.call=null; f.yaw=s.face; f.idleClock=0; f.q=pose[s.idle](0); return; }
+    if(ph.tun){
+      f.mv=null; f.sk=null; f.act=null; f.al=null; f.call=null; f.pi=i;
+      f.tun={ t0:t+(ph.delay||0), prog:ph.tun.from||0, speed:ph.speed||1 };
+      tunMem.rk=-1;
+      f.poseFn=tunPose;
+      return;
+    }
+    if(ph.al){
+      f.mv=null; f.sk=null; f.act=null;
+      f.al={ t0:t+(ph.delay||0), z0:f.z, calls:ph.al, speed:ph.speed||1, prog:0 };
+      f.idleSpeed=ph.speed||1;
+      return;
+    }
+    f.al=null; f.call=null;
     // skate: a set of skating jumps from where the player stands; keep phases let it run on
     // (and can change its speed), they never start a new set
     if(ph.skate){
@@ -732,15 +1491,17 @@ function applyScene(idx, t, snap){
   });
   if(snap){
     cam.follow.heading=ph.view; cam.blend=cam.blendTarget;
-    setCam(cam, lookCam(cam.overview), followCam(cam.follow, figs, 0, true), cam.blend);
+    setCam(cam, lookCam(cam.overview), followCam(cam.follow, camFigs(ph), 0, true), cam.blend);
   }
   return ph.hold ?? (ph.delay||0)+(ph.dur||0)+1.7;   // seconds until Auto advances
 }
 
 function updateScene(t, dt){
-  figs.forEach(f=>updateFig(f, t, dt));
+  shown().forEach(f=>updateFig(f, t, dt));
+  coach.idle = figs[0].call ? 'call' : 'stand';   // arm goes up while the command is given
+  updateFig(coach, t, dt);
   cam.blend += clamp(cam.blendTarget-cam.blend, -dt/1.4, dt/1.4);   // 1.4 s crane up/down
-  setCam(cam, lookCam(cam.overview), followCam(cam.follow, figs, dt, false), cam.blend);
+  setCam(cam, lookCam(cam.overview), followCam(cam.follow, camFigs(phases[current]), dt, false), cam.blend);
 }
 
 function renderScene(){
@@ -755,9 +1516,15 @@ function renderScene(){
     lineD(cam,[AW,0,PA_D],[-AW,0,PA_D]) + lineD(cam,[-AW,0,PA_D],[-AW,0,0]));
   LABELS.forEach((L,i)=>{
     const s=project(cam, L.at), el=labelEls[i];
-    if(s[2]<.6){ el.setAttribute('x',-999); return; }
+    if(s[2]<.6 || (L.part && L.part!==phases[current].part)){ el.setAttribute('x',-999); return; }
     el.setAttribute('x', s[0].toFixed(1)); el.setAttribute('y', s[1].toFixed(1));
   });
+
+  // Coach's call, above the coach's head
+  const call = coachOn && figs[0].call, cs = project(cam, [coach.x, 2.25, coach.z]);
+  if(call && cs[2]>.6){
+    callEl.textContent=call; callEl.setAttribute('x', clamp(cs[0], 40, 320).toFixed(1)); callEl.setAttribute('y', Math.max(22, cs[1]).toFixed(1));
+  } else callEl.setAttribute('x', -999);
 
   // Coach's direction: dashed arrow on the ground from each player's spot to the next landing spot
   let dd='', hd='';
@@ -773,19 +1540,58 @@ function renderScene(){
 
   const items=[];
   CONES.forEach(c=>{ const it=coneItem(cam,c[0],c[1]); if(it) items.push(it); });
-  if(repsOn){   // jump counter: goes up as each landing happens
-    const S=figs[0].sk;
-    const n = S ? clamp(Math.floor((S.prog-SK.LOAD-SK.AIR)/SK.T)+1, 0, S.jumps) : J;
-    document.getElementById('reps').textContent=`Set ${repsOn} · Jump ${n} / ${J}`;
+  if(repsOn){
+    const S=figs[0].sk, A=figs[0].al, T=figs[0].thr, U=figs[0].tun, H=figs[0].hp, P=figs[0].spd, el=document.getElementById('reps');
+    const RLs=figs[0].rl;
+    if(RLs){   // roll counter: goes up as each roll finishes
+      const n = clamp(Math.floor((RLs.prog-RL.D0-RL.ROLL)/RL.CYC)+1, 0, RL.N);   // completed rolls
+      el.textContent = n ? `Roll ${n} / ${RL.N} · ${n%2 ? 'Right' : 'Left'}` : `Roll 0 / ${RL.N}`;
+    } else if(P){   // set timer
+      el.textContent=`Set ${repsOn} · ${clamp(Math.floor(P.prog), 0, SPD.SET)} / ${SPD.SET} s`;
+    } else if(H){   // jump counter: goes up as each landing happens
+      const n = clamp(Math.floor((H.prog-HP.LOAD-HP.AIR)/HP.T)+1, 0, HP.N);
+      el.textContent=`Set ${repsOn} · ${n<HP.PER || (n===HP.PER && H.prog<HP.PER*HP.T) ? 'Right' : 'Left'} leg · Jump ${n} / ${HP.N}`;
+    } else if(U){   // roll counter: goes up as each ball is released
+      const r = clamp(Math.floor((U.prog-1)/TUN.TT)+1, 0, TUN.N);
+      el.textContent = `Set ${repsOn} · Roll ${r} / ${TUN.N}`;
+    } else if(T){   // throw counter: goes up as each catch happens
+      const n = clamp(Math.floor((T.prog-THR.REL-THR.FLY)/THR.CYC)+1, 0, THR.N);
+      el.textContent=`${T.st ? 'Right' : 'Left'} leg · Throw ${n} / ${THR.N}`;
+    } else if(A){   // stop counter: goes up as each stop happens
+      const n = clamp(Math.floor((A.prog-AL.RUN)/(AL.RUN+AL.HOLD))+1, 0, A.calls.length);
+      el.textContent=`Set ${repsOn} · Stop ${n} / ${A.calls.length}`;
+    } else { // jump counter: goes up as each landing happens
+      const n = S ? clamp(Math.floor((S.prog-SK.LOAD-SK.AIR)/SK.T)+1, 0, S.jumps) : J;
+      el.textContent=`Set ${repsOn} · Jump ${n} / ${J}`;
+    }
   }
 
   // Alignment guide on the player nearest the camera
   let near=null, nd=1e9;
-  figs.forEach(f=>{ const d=toCam(cam,[f.x,1,f.z])[2]; if(d<nd){ nd=d; near=f; } });
+  shown().forEach(f=>{ const d=toCam(cam,[f.x,1,f.z])[2]; if(d<nd){ nd=d; near=f; } });
   figs.forEach((f,i)=>{
+    const bs=ballShadows[i];
+    if(f.hidden){ shadows[i].setAttribute('rx', 0); bs.setAttribute('rx', 0); return; }
+    if(ballsOn && f.ballW){ ballItems(cam, f.ballW, items); placeShadow(cam, bs, f.ballW[0], f.ballW[2], .12, 0); }   // player's own ball
+    else bs.setAttribute('rx', 0);
     figureItems(cam, f, items, guideOn && f===near ? guideOn : false);
     placeShadow(cam, shadows[i], f.x, f.z, .36, f.lift);
   });
+  PAIRS.forEach((P,k)=>{
+    const A=figs[P.a], el=shadows[figs.length+1+k];
+    if(!ballsOn || !A.thr){ el.setAttribute('rx', 0); return; }
+    const p=ballPos(P, A, figs[P.b]);
+    ballItems(cam, p, items);
+    placeShadow(cam, el, p[0], p[2], .12, Math.max(0, p[1]-.1)*.6);
+  });
+  if(ballsOn && figs[0].tun){
+    const p=tunBall(figs[0].tun.prog, tunMem), el=shadows[figs.length+1];
+    ballItems(cam, p, items);
+    placeShadow(cam, el, p[0], p[2], .12, Math.max(0, p[1]-.1)*.6);
+  }
+  const cShadow = shadows[figs.length];
+  if(coachOn){ figureItems(cam, coach, items, false); placeShadow(cam, cShadow, coach.x, coach.z, .36, coach.lift); }
+  else cShadow.setAttribute('rx', 0);
   drawItems(pool, items);
 }
 
@@ -805,8 +1611,13 @@ function applyPhase(idx, snap){
     document.getElementById('partTitle').textContent=P.title;
     name.innerHTML=`${P.name}<span class="part-time">${P.time}</span>`; retrigger(name,'show');
   }
-  const cue=document.getElementById('cue');
-  cue.textContent=ph.cue; retrigger(cue,'show');
+  const cue=document.getElementById('cue'), card=document.getElementById('card');
+  if(ph.cue){ cue.textContent=ph.cue; retrigger(cue,'show'); } else cue.classList.remove('show');
+  // card = { k: small red heading, big: main line, sub: detail } — replaces animating repeat sets
+  if(ph.card){
+    card.innerHTML=`<div class="k">${ph.card.k}</div><div class="big">${ph.card.big}</div><div class="sub">${ph.card.sub}</div>`;
+    retrigger(card,'show');
+  } else card.classList.remove('show');
   document.getElementById('desc').textContent=ph.desc;
   document.querySelectorAll('.step-dot').forEach((d,i)=>{
     d.classList.toggle('active', i===idx);
